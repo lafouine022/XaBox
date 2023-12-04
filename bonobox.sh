@@ -357,7 +357,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	"$CMDCP" -R "$BONOBOX"/base "$NGINXBASE"
 
 	# téléchargement et déplacement de rutorrent
-	"$CMDGIT" clone --progress https://github.com/Novik/ruTorrent.git "$RUTORRENT"
+	"$CMDGIT" clone --progress https://github.com/lafouine022/ruTorrent.git "$RUTORRENT"
 	"$CMDECHO" ""; set "146" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
 	# installation des plugins - thank Micdu70 ;)
