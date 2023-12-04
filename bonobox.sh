@@ -264,10 +264,6 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# génération clé 2048 bits
 	"$CMDOPENSSL" dhparam -out dhparams.pem 2048 >/dev/null 2>&1 &
 
-	# téléchargement complément favicons
-	"$CMDWGET" -T 10 -t 3 http://www.bonobox.net/script/favicon.tar.gz || "$CMDWGET" -T 10 -t 3 http://alt.bonobox.net/favicon.tar.gz
-	"$CMDTAR" xzfv favicon.tar.gz
-
 	# création fichiers couleurs nano
 	"$CMDCP" -f "$FILES"/nano/ini.nanorc /usr/share/nano/ini.nanorc
 	"$CMDCP" -f "$FILES"/nano/conf.nanorc /usr/share/nano/conf.nanorc
@@ -357,55 +353,9 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	"$CMDGIT" clone --progress https://github.com/lafouine022/ruTorrent.git "$RUTORRENT"
 	"$CMDECHO" ""; set "146" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
-	# installation des plugins - thank Micdu70 ;)
-	cd /tmp || exit
-	"$CMDGIT" clone --progress https://github.com/exrat/rutorrent-plugins-pack
-
-	for PLUGINS in 'addzip' 'autodl-irssi' 'chat' 'filemanager' 'fileshare' 'geoip2' 'lbll-suite' 'logoff' 'nfo' 'pausewebui'  'ratiocolor' 'titlebar' 'trackerstatus'; do
-		"$CMDCP" -R /tmp/rutorrent-plugins-pack/"$PLUGINS" "$RUPLUGINS"/
-	done
-
 	# installation cloudscraper pour _cloudflare
 	"$CMDPIP" install setuptools --upgrade
 	"$CMDPIP" install cloudscraper
-
-	# configuration geoip2
-	cd "$RUPLUGINS"/geoip2/database || exit
-
-	for DATABASE in *.tar.gz; do
-		"$CMDTAR" xzfv "$DATABASE"
-	done
-
-	"$CMDRM" -R GeoLite2-City.mmdb.tar.gz GeoLite2-Country.mmdb.tar.gz
-
-	#"$CMDWGET" https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
-	#"$CMDTAR" xzfv GeoLite2-City.tar.gz
-	#cd /tmp/GeoLite2-City_* || exit
-	#"$CMDMV" GeoLite2-City.mmdb "$RUPLUGINS"/geoip2/database/GeoLite2-City.mmdb
-
-	# configuration filemanager
-	"$CMDCP" -f "$FILES"/rutorrent/filemanager.conf "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@RAR@|$CMDRAR|g;" "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@ZIP@|$CMDZIP|g;" "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@UNZIP@|$CMDUNZIP|g;" "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@TAR@|$CMDTAR|g;" "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@GZIP@|$CMDGZIP|g;" "$RUPLUGINS"/filemanager/conf.php
-	"$CMDSED" -i "s|@BZIP2@|$CMDBZIP2|g;" "$RUPLUGINS"/filemanager/conf.php
-
-	# configuration fileshare
-	"$CMDCP" -f "$FILES"/rutorrent/fileshare.conf "$RUPLUGINS"/fileshare/conf.php
-	"$CMDSED" -i "s/@IP@/$IP/g;" "$RUPLUGINS"/fileshare/conf.php
-	"$CMDCHOWN" -R "$WDATA" "$RUPLUGINS"/fileshare
-	"$CMDLN" -s "$RUPLUGINS"/fileshare/share.php "$NGINXBASE"/share.php
-
-	# plugin seedbox-manager
-	cd "$RUPLUGINS" || exit
-	"$CMDGIT" clone --progress https://github.com/Hydrog3n/linkseedboxmanager.git
-	"$CMDSED" -i "2i\$host = \$_SERVER['HTTP_HOST'];\n" "$RUPLUGINS"/linkseedboxmanager/conf.php
-	"$CMDSED" -i "s/http:\/\/seedbox-manager.ndd.tld/\/\/'. \$host .'\/seedbox-manager\//g;" "$RUPLUGINS"/linkseedboxmanager/conf.php
-
-	# plugin linklog
-	"$CMDGIT" clone --progress https://github.com/tomcdj71/LinkLogs.git linklogs
 
 	# configuration create
 	# shellcheck disable=SC2154
@@ -416,41 +366,12 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# configuration logoff
 	"$CMDSED" -i "s/scars,user1,user2/$USER/g;" "$RUPLUGINS"/logoff/conf.php
 
-	# configuration autodl-irssi
-	cd "$RUPLUGINS" || exit
-	"$CMDCP" -f autodl-irssi/_conf.php autodl-irssi/conf.php
-	"$CMDCP" -f autodl-irssi/css/oblivion.min.css autodl-irssi/css/spiritofbonobo.min.css
-	"$CMDCP" -f autodl-irssi/css/oblivion.min.css.map autodl-irssi/css/spiritofbonobo.min.css.map
-	"$CMDTOUCH" autodl-irssi/css/materialdesign.min.css
-	FONCIRSSI "$USER" "$PORT" "$USERPWD"
-
-	# installation mediainfo
-	# FONCMEDIAINFO
-
-	# variable minutes aléatoire crontab geoip
-	MAXIMUM=58
-	MINIMUM=1
-	UPGEOIP=$((MINIMUM+RANDOM*(1+MAXIMUM-MINIMUM)/32767))
-
-	cd "$SCRIPT" || exit
-
-	for COPY in 'updateGeoIP.sh' 'backup-session.sh'; do
-		"$CMDCP" -f "$FILES"/scripts/"$COPY" "$SCRIPT"/"$COPY"
-		"$CMDCHMOD" a+x "$COPY"
-	done
-
-	FONCBAKSESSION
-
-	# copie favicons trackers
-	"$CMDCP" -f /tmp/favicon/*.png "$RUPLUGINS"/tracklabels/trackers/
 
 	# ajout thèmes
 	"$CMDRM" -R "${RUPLUGINS:?}"/theme/themes/Blue
 	"$CMDCP" -R "$BONOBOX"/theme/ru/Blue "$RUPLUGINS"/theme/themes/Blue
-	"$CMDCP" -R "$BONOBOX"/theme/ru/SpiritOfBonobo "$RUPLUGINS"/theme/themes/SpiritOfBonobo
 	"$CMDCP" -R "$BONOBOX"/theme/ru/QuickBox-Dark "$RUPLUGINS"/theme/themes/QuickBox-Dark
 	"$CMDGIT" clone --progress https://github.com/themightykitten/ruTorrent-MaterialDesign.git "$RUPLUGINS"/theme/themes/MaterialDesign
-	"$CMDSED" -i "s/Bonobox/RatXaBox/g;" "$RUPLUGINS"/titlebar/init.js
 
 	# configuration thème
 	"$CMDSED" -i "s/defaultTheme = \"\"/defaultTheme = \"QuickBox-Dark\"/g;" "$RUPLUGINS"/theme/conf.php
@@ -460,7 +381,6 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# liens symboliques et permissions
 	"$CMDLDCONFIG"
 	"$CMDCHOWN" -R "$WDATA" "$RUTORRENT"
-	"$CMDCHMOD" -R 777 "$RUPLUGINS"/filemanager/scripts
 	"$CMDCHOWN" -R "$WDATA" "$NGINXBASE"
 
 	# configuration php
@@ -540,39 +460,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	"$CMDRM" -R "${NGINXWEB:?}"/html &> /dev/null
 	"$CMDRM" "$NGINXENABLE"/default &> /dev/null
 
-	# installation seedbox-manager
-	# composer
-	cd /tmp || exit
-	"$CMDCURL" -s http://getcomposer.org/installer | "$CMDPHP"
-	"$CMDMV" /tmp/composer.phar /usr/bin/composer
-	"$CMDCHMOD" +x /usr/bin/composer
-	"$CMDECHO" ""; set "156" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
-
-	# app
-	cd "$NGINXWEB" || exit
-	"$CMDCOMPOSER" create-project magicalex/seedbox-manager:"$SBMVERSION"
-	cd seedbox-manager || exit
-	"$CMDTOUCH" "$SBM"/sbm_v3
-	"$CMDCHOWN" -R "$WDATA" "$SBM"
-	# conf app
-	cd source || exit
-	"$CMDCHMOD" +x install.sh
-	./install.sh
-
-	"$CMDCP" -f "$FILES"/nginx/php-manager.conf "$NGINXCONFD"/php-manager.conf
-	"$CMDSED" -i "s|@SBM@|$SBM|g;" "$NGINXCONFD"/php-manager.conf
-	"$CMDSED" -i "s|@PHPSOCK@|$PHPSOCK|g;" "$NGINXCONFD"/php-manager.conf
-
-	# conf user
-	cd "$SBMCONFUSER" || exit
-	"$CMDMKDIR" "$USER"
-	"$CMDCP" -f "$FILES"/sbm/config-root.ini "$SBMCONFUSER"/"$USER"/config.ini
-	"$CMDSED" -i "s/https:\/\/graph.domaine.fr/..\/graph\/$USER.php/g;" "$SBMCONFUSER"/"$USER"/config.ini
-	"$CMDSED" -i "s/\"\/\"/\"\/home\/$USER\"/g;" "$SBMCONFUSER"/"$USER"/config.ini
-	"$CMDSED" -i "s/RPC1/$USERMAJ/g;" "$SBMCONFUSER"/"$USER"/config.ini
-	"$CMDSED" -i "s/contact@mail.com/$EMAIL/g;" "$SBMCONFUSER"/"$USER"/config.ini
-
-	"$CMDCHOWN" -R "$WDATA" "$SBMCONFUSER"
+	# txt
 	"$CMDECHO" ""; set "162" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
 	# logrotate
@@ -898,15 +786,6 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 			EOF
 
 			FONCSERVICE restart ssh
-
-			# configuration user seedbox-manager
-			cd "$SBMCONFUSER" || exit
-			"$CMDMKDIR" "$USER"
-			"$CMDCP" -f "$FILES"/sbm/config-user.ini "$SBMCONFUSER"/"$USER"/config.ini
-			"$CMDSED" -i "s/\"\/\"/\"\/home\/$USER\"/g;" "$SBMCONFUSER"/"$USER"/config.ini
-			"$CMDSED" -i "s/https:\/\/graph.domaine.fr/..\/graph\/$USER.php/g;" "$SBMCONFUSER"/"$USER"/config.ini
-			"$CMDSED" -i "s/RPC1/$USERMAJ/g;" "$SBMCONFUSER"/"$USER"/config.ini
-			"$CMDSED" -i "s/contact@mail.com/$EMAIL/g;" "$SBMCONFUSER"/"$USER"/config.ini
 
 			# plugins.ini
 			"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
