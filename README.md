@@ -27,20 +27,6 @@ chmod a+x bonobox.sh && ./bonobox.sh --fr
 # English
 chmod a+x bonobox.sh && ./bonobox.sh --en
 
-# Pусский  ( "д/H" или "y/n" )
-chmod a+x bonobox.sh && ./bonobox.sh --ru
-
-# German
-chmod a+x bonobox.sh && ./bonobox.sh --de
-
-# Español
-chmod a+x bonobox.sh && ./bonobox.sh --es
-
-# Português
-chmod a+x bonobox.sh && ./bonobox.sh --pt
-
-# Português do Brasil
-chmod a+x bonobox.sh && ./bonobox.sh --ptbr
 ```
 Ajout des droit user pour le reboot et liens symbolique sur le manager!
 ```
