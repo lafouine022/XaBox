@@ -13,7 +13,7 @@ apt-get update && apt-get upgrade -y
 apt-get install git-core -y
 
 cd /tmp
-git clone https://github.com/xavier84/RatXaBox ratxabox
+git clone https://github.com/lafouine022/RatXaBox ratxabox
 cd ratxabox
 chmod a+x bonobox.sh && ./bonobox.sh
 ```
@@ -42,6 +42,8 @@ chmod a+x bonobox.sh && ./bonobox.sh --pt
 # Português do Brasil
 chmod a+x bonobox.sh && ./bonobox.sh --ptbr
 ```
+Ajout des droit user pour le reboot et liens symbolique sur le manager!
+```
 DROIT USER POUR LE REBOOT
 
 nano /etc/sudoers Puis rajouter a la fin www-data ALL = NOPASSWD: ALL
@@ -53,7 +55,7 @@ ln -s home var/www/rutorrent/files-manager/files/home
 DONNER LES DROIT A TOUS LE HOME POUR POUVOIR EFFACER LES FICHIER DANS LE MANAGER Puis chmord /www-Data tous le home et le reparer
 
 chown -R www-data:www-data /home/
-
+```
 ----------------------------------------------------------
 Pour gérer vos utilisateurs ultérieurement, il vous suffit de relancer le script
 
