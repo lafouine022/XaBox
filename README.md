@@ -15,19 +15,12 @@ apt-get install git-core -y
 cd /tmp
 git clone https://github.com/lafouine022/RatXaBox ratxabox
 cd ratxabox
-chmod a+x bonobox.sh && ./bonobox.sh
-```
-
-
-**Vous pouvez aussi forcer la langue de votre choix:**
-```
-# Français
 chmod a+x bonobox.sh && ./bonobox.sh --fr
 
 # English
 chmod a+x bonobox.sh && ./bonobox.sh --en
-
 ```
+
 Ajout des droit user pour le reboot et liens symbolique sur le manager!
 ```
 DROIT USER POUR LE REBOOT
