@@ -463,7 +463,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# liens symboliques et permissions
 	"$CMDLDCONFIG"
 	"$CMDCHOWN" -R "$WDATA" "$RUTORRENT"
-	"$CMDCHMOD" -R 777 "$RUPLUGINS"/filemanager/scripts
+	#"$CMDCHMOD" -R 777 "$RUPLUGINS"/filemanager/scripts
 	"$CMDCHOWN" -R "$WDATA" "$NGINXBASE"
 
 	# configuration php
