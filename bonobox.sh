@@ -448,11 +448,11 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	"$CMDCP" -f /tmp/favicon/*.png "$RUPLUGINS"/tracklabels/trackers/
 
 	# ajout thèmes
-	"$CMDRM" -R "${RUPLUGINS:?}"/theme/themes/Blue
-	"$CMDCP" -R "$BONOBOX"/theme/ru/Blue "$RUPLUGINS"/theme/themes/Blue
+	#"$CMDRM" -R "${RUPLUGINS:?}"/theme/themes/Blue
+	#"$CMDCP" -R "$BONOBOX"/theme/ru/Blue "$RUPLUGINS"/theme/themes/Blue
 	#"$CMDCP" -R "$BONOBOX"/theme/ru/SpiritOfBonobo "$RUPLUGINS"/theme/themes/SpiritOfBonobo
 	"$CMDCP" -R "$BONOBOX"/theme/ru/QuickBox-Dark "$RUPLUGINS"/theme/themes/QuickBox-Dark
-	"$CMDGIT" clone --progress https://github.com/themightykitten/ruTorrent-MaterialDesign.git "$RUPLUGINS"/theme/themes/MaterialDesign
+	#"$CMDGIT" clone --progress https://github.com/themightykitten/ruTorrent-MaterialDesign.git "$RUPLUGINS"/theme/themes/MaterialDesign
 	#"$CMDSED" -i "s/Bonobox/RatXaBox/g;" "$RUPLUGINS"/titlebar/init.js
 
 	# configuration thème
