@@ -314,7 +314,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 
 	# installation xmlrpc libtorrent rtorrent
 	cd /tmp || exit
-	"$CMDGIT" clone --progress https://github.com/mirror/xmlrpc-c.git
+	"$CMDGIT" clone --progress https://github.com/lafouine022/xmlrpc-c.git
 
 	cd xmlrpc-c/stable || exit
 	./configure #--disable-cplusplus
