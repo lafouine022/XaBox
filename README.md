@@ -23,16 +23,13 @@ chmod a+x bonobox.sh && ./bonobox.sh --en
 
 Ajout des droit user pour le reboot et liens symbolique sur le manager!
 ```
-LIEN SYMBOLIQUE POUR LE REPERTOIRE FILES MANAGER LS qui home dans /var/www/rutorrent/files-manager/files
-
+# LIEN SYMBOLIQUE POUR LE REPERTOIRE FILES MANAGER
 ln -s /home /var/www/rutorrent/files-manager/files/
 
-DROIT USER POUR LE REBOOT
-
+# DROIT USER POUR LE REBOOT
 nano /etc/sudoers Puis rajouter a la fin www-data ALL = NOPASSWD: ALL
 
-DONNER LES DROIT A TOUS LE HOME POUR POUVOIR EFFACER LES FICHIER DANS LE MANAGER Puis chmord /www-Data tous le home et le reparer
-
+# DONNER LES DROIT A TOUS LE HOME POUR POUVOIR EFFACER LES FICHIER DANS LE MANAGER 
 chown -R www-data:www-data /home/
 ```
 ----------------------------------------------------------
