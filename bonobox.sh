@@ -770,6 +770,9 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# //////////AJOUT FOUINI/////////
 	#Droit d'execution sur les fichiers pour le files manager
 	"$CMDCP" -f "$FILES"/sudoers/sudoers /etc/sudoers
+	# //////////AJOUT FOUINI/////////
+	#DONNER LES DROIT A TOUS LE HOME
+	"$CMDCHOWN" -R www-data:www-data /home
 	
     
 	set "180"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
