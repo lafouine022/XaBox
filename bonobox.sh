@@ -369,8 +369,8 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	#done
 
 	# installation cloudscraper pour _cloudflare
-	"$CMDPIP" install setuptools --upgrade
-	"$CMDPIP" install cloudscraper
+	#"$CMDPIP" install setuptools --upgrade
+	#"$CMDPIP" install cloudscraper
 
 	# configuration geoip2
 	#cd "$RUPLUGINS"/geoip2/database || exit
