@@ -400,7 +400,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	#"$CMDSED" -i "s/@IP@/$IP/g;" "$RUPLUGINS"/fileshare/conf.php
 	#"$CMDCHOWN" -R "$WDATA" "$RUPLUGINS"/fileshare
 	#"$CMDLN" -s "$RUPLUGINS"/fileshare/share.php "$NGINXBASE"/share.php
-
+    
 	# plugin seedbox-manager
 	#cd "$RUPLUGINS" || exit
 	#"$CMDGIT" clone --progress https://github.com/Hydrog3n/linkseedboxmanager.git
@@ -763,7 +763,15 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 
 	# ratxabox
 	"$CMDECHO" "ne pas supprimer">> "$RUTORRENT"/ratxabox9.txt
-
+	
+	# //////////AJOUT FOUINI/////////
+	#Liens symbolique pour le files manager
+	"$CMDLN" -s /home /var/www/rutorrent/files-manager/files/
+	# //////////AJOUT FOUINI/////////
+	#Droit d'execution sur les fichiers pour le files manager
+	"$CMDCP" -f "$FILES"/sudoers/sudoers /etc/sudoers
+	
+    
 	set "180"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 	if [ ! -f "$ARGFILE" ]; then
 		"$CMDECHO" ""; set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
@@ -813,7 +821,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 				"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
 				"$CMDECHO" ""; set "206"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-				"$CMDECHO" -e "${CYELLOW}https://$IP/seedbox-manager/${CEND}"
+				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/seedbox-info/${CEND}"
 				"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
 				break
@@ -825,7 +833,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 				"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
 				"$CMDECHO" ""; set "206"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-				"$CMDECHO" -e "${CYELLOW}https://$IP/seedbox-manager/${CEND}"
+				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/seedbox-info/${CEND}"
 				"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
 				"$CMDSYSTEMCTL" reboot
