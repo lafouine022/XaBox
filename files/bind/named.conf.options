@@ -13,8 +13,8 @@ options {
 
   forwarders {
     # dns.watch
-    84.200.69.80;
-    84.200.70.40;
+    1.1.1.1;
+    1.0.0.1;
   };
 
   dnssec-enable yes; 
