@@ -272,6 +272,21 @@ div#t div#plugins {
 div#t div#plugins:hover {
     background: transparent url(./images/toolbar.png) no-repeat -421px -30px
 }
+/* AJOUT POUR LES LIENS INFO ET MANAGER */
+div#t div#linksubsonic {
+  margin-top: 2px;
+  opacity: 0.6; /* Opacité initiale */
+}
+div#t div#linksubboot {
+  margin-top: 2px;
+  opacity: 0.6; /* Opacité initiale */
+}
+
+div#t div#linksubsonic:hover,
+div#t div#linksubboot:hover {
+  opacity: 1; /* Retire l'opacité au survol */
+}
+
 #go {
     background: transparent url(./images/toolbar.png) no-repeat -90px 0px
 }
