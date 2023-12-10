@@ -61,6 +61,7 @@ if FONCYES "$VALIDE"; then
 		set "294" "258"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CYELLOW}$TXT1${CEND} ${CGREEN}$TXT2${CEND}"
 		"$CMDECHO" ""
 		"$CMDECHO" -e "${CMAG}*****RatXaBox*****${CEND}"
+		set "808" "809" ; FONCTXT "$1" "$2" ; "$CMDECHO" -e "${CYELLOW}$TXT1${CEND} ${CGREEN}$TXT2${CEND}" #LVM 49
 		set "836" "810" ; FONCTXT "$1" "$2" ; "$CMDECHO" -e "${CYELLOW}$TXT1${CEND} ${CGREEN}$TXT2${CEND}" #plex 50
 		set "838" "812" ; FONCTXT "$1" "$2" ; "$CMDECHO" -e "${CYELLOW}$TXT1${CEND} ${CGREEN}$TXT2${CEND}" #emby 51
 		set "840" "814" ; FONCTXT "$1" "$2" ; "$CMDECHO" -e "${CYELLOW}$TXT1${CEND} ${CGREEN}$TXT2${CEND}" #openvpn 52
@@ -417,7 +418,12 @@ if FONCYES "$VALIDE"; then
 				fi
 				break
 			;;
-
+            49)
+				# lancement lancement gestion des utilisateurs
+	            "$CMDCHMOD" +x ./lvm-mondedie.sh
+	            # shellcheck source=/dev/null
+	            source ./lvm-mondedie.sh
+			;;
 			50)
 				"$CMDAPTGET" install apt-transport-https -y
 				"$CMDECHO" "deb https://downloads.plex.tv/repo/deb/ public main" > /etc/apt/sources.list.d/plexmediaserver.list
