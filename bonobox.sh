@@ -767,13 +767,13 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# //////////AJOUT FOUINI/////////
 	#Liens symbolique pour le files manager
 	"$CMDLN" -s /home /var/www/rutorrent/files-manager/files/
-	# //////////AJOUT FOUINI/////////
 	#Droit d'execution sur les fichiers pour le files manager
 	"$CMDCP" -f "$FILES"/sudoers/sudoers /etc/sudoers
-	# //////////AJOUT FOUINI/////////
 	#DONNER LES DROIT A TOUS LE HOME
 	"$CMDCHOWN" -R www-data:www-data /home
-	
+	#Text pour dire que l'install est OK
+	"$CMDECHO" ""; set "179" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
+	# //////////FIN AJOUT FOUINI/////////
     
 	set "180"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 	if [ ! -f "$ARGFILE" ]; then
