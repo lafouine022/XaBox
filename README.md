@@ -20,20 +20,6 @@ chmod a+x bonobox.sh && ./bonobox.sh --fr
 # English
 chmod a+x bonobox.sh && ./bonobox.sh --en
 ```
-
-~~Ajout des droit user pour le reboot et liens symbolique sur le manager!~~
-
-```
-# LIEN SYMBOLIQUE POUR LE REPERTOIRE FILES MANAGER
-ln -s /home /var/www/rutorrent/files-manager/files/
-
-# DROIT USER POUR LE REBOOT
-nano /etc/sudoers Puis rajouter a la fin www-data ALL = NOPASSWD: ALL
-
-# DONNER LES DROIT A TOUS LE HOME POUR POUVOIR EFFACER LES FICHIER DANS LE MANAGER 
-chown -R www-data:www-data /home/
-```
-
 ----------------------------------------------------------
 Pour gérer vos utilisateurs ultérieurement, il vous suffit de relancer le script
 
