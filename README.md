@@ -13,7 +13,7 @@ apt-get update && apt-get upgrade -y
 apt-get install git-core -y
 
 cd /tmp
-git clone https://github.com/lafouine022/RatXaBox ratxabox
+git clone https://github.com/lafouine022/XaBox ratxabox
 cd ratxabox
 chmod a+x bonobox.sh && ./bonobox.sh --fr
 
