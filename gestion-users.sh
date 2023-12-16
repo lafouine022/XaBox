@@ -242,22 +242,6 @@ if FONCYES "$VALIDE"; then
 				"$CMDSED" -i "s/@USER@/$USER/g;" "$NGINXBASE"/"$USER".html
 				"$CMDCHOWN" -R "$WDATA" "$NGINXBASE"/"$USER".html
 
-				# seedbox-manager service minimum
-				"$CMDMV" "$SBMCONFUSER"/"$USER"/config.ini "$SBMCONFUSER"/"$USER"/config.bak
-				if [ ! -f "$SBM"/sbm_v3 ]; then
-					"$CMDCP" -f "$FILES"/sbm_old/config-mini.ini "$SBMCONFUSER"/"$USER"/config.ini
-				else
-					"$CMDCP" -f "$FILES"/sbm/config-mini.ini "$SBMCONFUSER"/"$USER"/config.ini
-				fi
-
-				"$CMDSED" -i "s/\"\/\"/\"\/home\/$USER\"/g;" "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDSED" -i "s/https:\/\/rutorrent.domaine.fr/..\/$USER.html/g;" "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDSED" -i "s/https:\/\/graph.domaine.fr/..\/$USER.html/g;" "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDSED" -i "s/RPC1/$USERMAJ/g;" "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDSED" -i "s/contact@mail.com/$EMAIL/g;" "$SBMCONFUSER"/"$USER"/config.ini
-
-				"$CMDCHOWN" -R "$WDATA" "$SBMCONFUSER"
-
 				# stop user
 				FONCSERVICE stop "$USER"-rtorrent
 				if [ -f "/etc/irssi.conf" ]; then
@@ -266,6 +250,26 @@ if FONCYES "$VALIDE"; then
 				"$CMDPKILL" -u "$USER"
 				"$CMDMV" /home/"$USER"/.rtorrent.rc /home/"$USER"/.rtorrent.rc.bak
 				"$CMDUSERMOD" -L "$USER"
+				##########################################################################
+				NGINX_CONFIG="$NGINXENABLE"/rutorrent.conf
+                USER_TO_BLOCK="$USER"
+				#Save config nginx
+                cp "$NGINX_CONFIG" "$NGINX_CONFIG.bak"
+
+                # Ajouter les lignes pour bloquer un utilisateur spécifique
+				sed -i "/location \/rutorrent {/a \    if (\$remote_user = \"$USER_TO_BLOCK\") {\n        return 302 /$USER_TO_BLOCK.html;\n    }" "$NGINX_CONFIG"
+				    
+				# Redémarrer Nginx pour appliquer les changements
+				nginx -t
+                if [ $? -eq 0 ]; then
+                # Redémarrer Nginx pour appliquer les changements
+                sudo service nginx restart
+                echo -e "\e[92mSuccess! L'utilisateur $USER_TO_BLOCK a plus accès a RuTorrent! NGINX a été redémarré.\e[0m"
+                else
+                echo -e "\e[91mErreur: La syntaxe NGINX est incorrecte! Veuillez vérifier la configuration avant de redémarrer Nginx. Un backup est présent ici $NGINX_CONFIG.bak\e[0m"
+                exit 1
+                fi
+				##########################################################################
 
 				"$CMDECHO" ""; set "264" "268"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND} ${CBLUE}$TXT2${CEND}"
 			;;
@@ -290,11 +294,27 @@ if FONCYES "$VALIDE"; then
 				fi
 				"$CMDUSERMOD" -U "$USER"
 
-				# seedbox-manager service normal
-				"$CMDRM" "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDMV" "$SBMCONFUSER"/"$USER"/config.bak "$SBMCONFUSER"/"$USER"/config.ini
-				"$CMDCHOWN" -R "$WDATA" "$SBMCONFUSER"
+				# seedbox service normal
 				"$CMDRM" "$NGINXBASE"/"$USER".html
+				
+				#######################################################################  
+                NGINX_CONFIG="$NGINXENABLE"/rutorrent.conf
+                USER_TO_BLOCK="$USER"
+                #Save config nginx
+                cp "$NGINX_CONFIG" "$NGINX_CONFIG.bak"
+
+				sed -i "/if (\$remote_user = \"$USER_TO_BLOCK\") {/,/}/d" "$NGINX_CONFIG"
+				# Redémarrer Nginx pour appliquer les changements
+				nginx -t
+                if [ $? -eq 0 ]; then
+                # Redémarrer Nginx pour appliquer les changements
+                sudo service nginx restart
+                echo -e "\e[92mSuccess! L'utilisateur $USER_TO_BLOCK a de nouveau accès a RuTorrent! NGINX a été redémarré.\e[0m"
+                else
+                echo -e "\e[91mErreur: La syntaxe NGINX est incorrecte! Veuillez vérifier la configuration avant de redémarrer Nginx. Un backup est présent ici $NGINX_CONFIG.bak\e[0m"
+                exit 1
+                fi
+				##########################################################################
 
 				"$CMDECHO" ""; set "264" "272"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND} ${CBLUE}$TXT2${CEND}"
 			;;
