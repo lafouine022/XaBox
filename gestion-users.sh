@@ -482,7 +482,7 @@ if FONCYES "$VALIDE"; then
 			;;
 
 			52)
-				"$CMDWGET" https://raw.githubusercontent.com/xavier84/Script-xavier/master/openvpn/openvpn-install.sh
+				"$CMDWGET" "$CMDWGET" https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
 				"$CMDCHMOD" +x openvpn-install.sh && ./openvpn-install.sh
 			;;
 
